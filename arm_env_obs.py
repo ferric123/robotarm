@@ -52,7 +52,7 @@ class ArmEnv(Box2DEnv, Serializable):
         #dist1 = [(0.1 - self.arm1.vertices[0]), (-0.5 - self.arm1.vertices[1])]
         dist2 = [(1 - self.vertices[0]), (0.6 - self.vertices[1])]
         r1=-np.sqrt(dist2[0]**2+dist2[1]**2)
-        if self.judge_obstacale: r1-=1
+        if self.judge_obstacale(): r1-=1
         yield r1
 
 
