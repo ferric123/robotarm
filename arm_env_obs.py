@@ -79,19 +79,19 @@ class ArmEnv(Box2DEnv, Serializable):
         y3 = self.ob1[1]
         #arm2判定
         arm2_coord = compute_rect_vertices(self.arm2.position, self.get_tip_pos(), 0.05)
-        #line1根据a,b两点构造直线方程 AX+BY+C=0
+        #line1 手臂2左直线根据a,b两点构造直线方程 AX+BY+C=0
         A1=arm2_coord[2][1]-arm2_coord[3][1] #y2-y1
         B1=arm2_coord[2][0]-arm2_coord[3][0] #x2-x1
         C1=arm2_coord[2][0]*arm2_coord[3][1]-arm2_coord[3][0]*arm2_coord[2][1]  #x2*y1-x1*y2
         #计算obstacale点到直线距离
         D1=abs(A1*x3+B1*y3+C1)/math.sqrt(A1*A1+B1*B1)
-        #line2根据a,b两点构造直线方程 AX+BY+C=0
+        #line2 手臂2右直线 根据a,b两点构造直线方程 AX+BY+C=0
         A2=arm2_coord[1][1]-arm2_coord[0][1]
         B2=arm2_coord[1][0]-arm2_coord[0][0]
         C2=arm2_coord[1][0]*arm2_coord[0][1]-arm2_coord[0][0]*arm2_coord[1][1]
         #计算obstacale点到直线距离
         D2=abs(A2*x3+B2*y3+C2)/math.sqrt(A2*A2+B2*B2)
-        #line3根据a,b两点构造直线方程 AX+BY+C=0
+        #line3 手臂2上直线 根据a,b两点构造直线方程 AX+BY+C=0
         A3=arm2_coord[1][1]-arm2_coord[2][1]
         B3=arm2_coord[1][0]-arm2_coord[2][0]
         C3=arm2_coord[1][0]*arm2_coord[2][1]-arm2_coord[2][0]*arm2_coord[1][1]
