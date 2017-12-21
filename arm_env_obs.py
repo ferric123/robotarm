@@ -131,6 +131,7 @@ class ArmEnv(Box2DEnv, Serializable):
         D8=abs(A8*x3+B8*y3+C8)/math.sqrt(A8*A8+B8*B8)
 
         return D1<0.2 and D2<0.2 and D5<0.2 and D6<0.2 and D3<1.1 and D4<1.1 and D7<1.1 and D8<1.1
+        # return (D1<0.2 and D2<0.2 and D3<1.1 and D4<1.1) or (D5<0.2 and D6<0.2 and D7<1.1 and D8<1.1)
 
 if __name__=="__main__":
     ar=ArmEnv()
