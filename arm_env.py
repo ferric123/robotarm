@@ -28,7 +28,8 @@ class ArmEnv(Box2DEnv, Serializable):
         self.arm1 = find_body(self.world, "arm1")
         self.arm2 = find_body(self.world, "arm2")
         self.point = find_body(self.world, "point")
-        self.vertices=np.array([0.0,0.0])
+        self.vertices = np.array([0.0,0.0])
+        self.totalaction = 0
         Serializable.__init__(self, *args, **kwargs)
 
 
@@ -36,9 +37,10 @@ class ArmEnv(Box2DEnv, Serializable):
     def reset(self):
         self._set_state(self.initial_state)
         self._invalidate_state_caches()
-        lower, higher = -np.pi,np.pi
-        aarm1 = np.random.uniform(lower,higher)
-        aarm2 = np.random.uniform(lower,higher)
+        self.totalaction = 0
+        lower1,lower2, higher = -np.pi,0,np.pi
+        aarm1 = np.random.uniform(lower1,higher)
+        aarm2 = np.random.uniform(lower2,higher)
         self.arm1.angle = aarm1
         self.arm2.angle = aarm2
         #print(self.arm1.angle,self.arm2.angle)
@@ -50,7 +52,10 @@ class ArmEnv(Box2DEnv, Serializable):
         self.vertices[0] ,self.vertices[1]=self.get_tip_pos()
         #dist1 = [(0.1 - self.arm1.vertices[0]), (-0.5 - self.arm1.vertices[1])]
         dist2 = [(1 - self.vertices[0]), (0.6 - self.vertices[1])]
-        yield -np.sqrt(dist2[0]**2+dist2[1]**2)
+        r1=-np.sqrt(dist2[0]**2+dist2[1]**2)
+        self.totalaction += np.sqrt(np.sum(np.square(action)))
+        r1-=0.01*self.totalaction
+        yield r1
 
 
 
@@ -58,7 +63,9 @@ class ArmEnv(Box2DEnv, Serializable):
     def is_current_done(self):
         a=((1 - 0.05 < self.vertices[0] < 1 + 0.05) and \
         (0.6 - 0.05 < self.vertices[1] < 0.6 + 0.05))
-        if a: print(a)
+        if a:
+            print(a)
+            time.sleep(2)
         return a
 
     def get_tip_pos(self):
